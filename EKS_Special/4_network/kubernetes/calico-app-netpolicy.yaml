@@ -1,0 +1,36 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-allow-ingress
+  namespace: stage
+spec:
+  podSelector:
+    matchLabels:
+      role: db
+  policyTypes:
+    - Ingress
+  ingress:
+    - ports:
+      - port: 3306
+        protocol: TCP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-allow-egress
+  namespace: stage
+spec:
+  podSelector:
+    matchLabels:
+      role: was
+  policyTypes:
+    - Egress
+  egress: 
+    - to:
+      - ipBlock:
+          cidr: <CHANGE ME>
+      ports:
+      - protocol: TCP
+        port: 3306

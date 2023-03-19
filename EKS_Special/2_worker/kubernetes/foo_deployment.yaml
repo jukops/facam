@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo
+spec:
+  selector:
+    matchLabels:
+      app: foo
+  template:
+    metadata:
+      labels:
+        app: foo
+    spec:
+      containers:
+      - name: ubuntu
+        image: ubuntu:latest
+        args:
+        - sleep
+        - "1000000"
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 128Mi
+          limits:
+            cpu: 1000m
+            memory: 256Mi

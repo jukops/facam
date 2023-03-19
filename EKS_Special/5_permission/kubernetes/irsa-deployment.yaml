@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: stage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo
+  namespace: stage
+spec:
+  selector:
+    matchLabels:
+      app: foo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: foo
+    spec:
+#      serviceAccountName: foo
+      containers:
+      - name: foo
+        image: amazon/aws-cli
+        command: ['sleep', '86400']
+        resources:
+          requests:
+            cpu: 128m
+            memory: 64Mi
+          limits:
+            cpu: 256m
+            memory: 128Mi

@@ -1,0 +1,61 @@
+# Production
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: production
+  name: aws:iam-developer-reader
+rules:
+- apiGroups: [""]
+  resources: ["pods", "pods/log"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["create"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: production
+  name: aws:iam-developer-reader
+subjects:
+- kind: Group
+  name: aws:iam-developer-role
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: aws:iam-developer-reader
+  apiGroup: rbac.authorization.k8s.io
+
+# Stage
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: stage
+  name: stage-admin
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: stage
+  name: aws:iam-developer-master
+subjects:
+- kind: Group
+  name: aws:iam-developer-role
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: stage-admin
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,17 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: facam-eks
+  region: ap-northeast-2
+
+# for cost saving
+vpc:
+  nat:
+    gateway: Single
+
+nodeGroups:
+  - name: ng-1
+    instanceType: t3.medium
+    desiredCapacity: 1
+    privateNetworking: true

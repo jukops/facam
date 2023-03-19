@@ -1,0 +1,13 @@
+---
+apiVersion: vpcresources.k8s.aws/v1beta1
+kind: SecurityGroupPolicy
+metadata:
+  name: facam-sgapp-sgpolicy
+  namespace: stage
+spec:
+  podSelector: 
+    matchLabels:
+      app: sg-app
+  securityGroups:
+    groupIds:
+      - <CHNAGE ME>

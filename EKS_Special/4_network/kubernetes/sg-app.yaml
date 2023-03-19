@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sg-app
+  namespace: stage
+  labels:
+    app: sg-app
+spec:
+  selector:
+    matchLabels:
+      app: sg-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sg-app
+    spec:
+      terminationGracePeriodSeconds: 90
+      containers:
+      - name: sg-app
+        image: curlimages/curl
+        command: ['sleep', '86400']

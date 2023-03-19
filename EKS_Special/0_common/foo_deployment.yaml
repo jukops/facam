@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo
+spec:
+  selector:
+    matchLabels:
+      app: foo
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: foo
+    spec:
+      containers:
+      - name: ubuntu
+        image: ubuntu:latest
+        ports:
+        - containerPort: 80
+        args:
+        - sleep
+        - "1000000"
