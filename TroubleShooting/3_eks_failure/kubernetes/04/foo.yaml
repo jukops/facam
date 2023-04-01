@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foo
+  namespace: preprod
+spec:
+  nodeSelector:
+    facam/name: common
+  containers:
+  - name: foo
+    image: nginx:1.14.2
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 1000m
+        memory: 512Mi

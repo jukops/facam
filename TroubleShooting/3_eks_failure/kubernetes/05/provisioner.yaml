@@ -1,0 +1,28 @@
+apiVersion: karpenter.sh/v1alpha5
+kind: Provisioner
+metadata:
+  name: msa
+spec:
+  requirements:
+    - key: node.kubernetes.io/instance-type
+      operator: In
+      values: ["t3.medium"]
+  providerRef:
+    name: msa
+  ttlSecondsAfterEmpty: 30
+  labels:
+    facam/node: msa
+---
+apiVersion: karpenter.k8s.aws/v1alpha1
+kind: AWSNodeTemplate
+metadata:
+  name: msa
+spec:
+  instanceProfile: "karpenter-node"
+  subnetSelector:
+    Name: "main"
+  securityGroupSelector:
+    Owner: "karpenter/facam-ts-handson"
+    kubernetes.io/cluster/facam-ts-handson: "shared"
+  tags:
+    Owner: "karpenter/facam-ts-handson"

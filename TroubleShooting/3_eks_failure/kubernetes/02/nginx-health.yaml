@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-health
+  namespace: preprod
+spec:
+  selector:
+    matchLabels:
+      app: nginx-health
+  template:
+    metadata:
+      labels:
+        app: nginx-health
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          tcpSocket:
+            port: 80
+          periodSeconds: 5
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 1
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          periodSeconds: 10
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-health
+  namespace: preprod
+spec:
+  selector:
+    app: nginx-health
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

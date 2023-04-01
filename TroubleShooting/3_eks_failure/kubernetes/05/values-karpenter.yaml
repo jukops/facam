@@ -1,0 +1,12 @@
+---
+settings:
+  aws:
+    defaultInstanceProfile: KarpenterInstanceProfile
+    clusterName: facam-ts-handson
+    clusterEndpoint: "<your cluster>"
+
+serviceAccount:
+  create: true
+  name: karpenter
+  annotations:
+    eks.amazonaws.com/role-arn: "<your karpenter role arn>"

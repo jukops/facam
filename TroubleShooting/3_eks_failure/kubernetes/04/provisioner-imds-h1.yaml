@@ -1,0 +1,34 @@
+apiVersion: karpenter.sh/v1alpha5
+kind: Provisioner
+metadata:
+  name: imds-h1
+spec:
+  requirements:
+    - key: node.kubernetes.io/instance-type
+      operator: In
+      values: ["t3.medium"]
+  providerRef:
+    name: imds-h1
+  ttlSecondsAfterEmpty: 30
+  labels:
+    facam/node: imds-h1
+---
+apiVersion: karpenter.k8s.aws/v1alpha1
+kind: AWSNodeTemplate
+metadata:
+  name: imds-h1
+spec:
+  instanceProfile: "karpenter-node"
+  subnetSelector:
+    Name: "private-ap-*"
+    kubernetes.io/cluster/facam-ts-handson: "shared"
+  securityGroupSelector:
+    Owner: "karpenter/facam-ts-handson"
+    kubernetes.io/cluster/facam-ts-handson: "shared"
+  tags:
+    Owner: "karpenter/facam-ts-handson"
+  metadataOptions:
+    httpEndpoint: enabled
+    httpProtocolIPv6: disabled
+    httpPutResponseHopLimit: 1
+    httpTokens: required

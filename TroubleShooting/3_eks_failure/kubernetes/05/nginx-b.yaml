@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-b
+  namespace: preprod
+spec:
+  selector:
+    matchLabels:
+      app: nginx-b
+  replicas: 6
+  template:
+    metadata:
+      labels:
+        app: nginx-b
+    spec:
+      nodeSelector:
+        facam/node: msa
+      containers:
+      - name: nginx-b
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-b
+  namespace: preprod
+spec:
+  selector:
+    app: nginx-b
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

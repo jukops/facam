@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-imds
+  namespace: preprod
+spec:
+  selector:
+    matchLabels:
+      app: nginx-imds
+  template:
+    metadata:
+      labels:
+        app: nginx-imds
+    spec:
+      nodeSelector:
+        facam/node: imds-h1
+      containers:
+      - name: nginx-imds
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi

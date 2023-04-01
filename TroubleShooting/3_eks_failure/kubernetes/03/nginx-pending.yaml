@@ -1,0 +1,21 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-n
+  namespace: preprod
+spec:
+  selector:
+    matchLabels:
+      app: nginx-n
+  replicas: 20
+  template:
+    metadata:
+      labels:
+        app: nginx-n
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
